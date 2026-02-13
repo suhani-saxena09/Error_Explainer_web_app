@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Error Explainer</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Error Explainer 🔧</h1>
+    <p>Paste your code below and select the language:</p>
+    <textarea id="errorInput" placeholder="Paste your code here..."></textarea><br>
+    <select id="language">
+        <option value="python">Python</option>
+        <option value="java">Java</option>
+        <option value="cpp">C++</option>
+        <option value="javascript">JavaScript</option>
+    </select><br>
+    <button onclick="sendCode()">Explain / Run</button>
+    <div id="output"></div>
+</div>
+
+<script>
+function sendCode() {
+    const code = document.getElementById('errorInput').value;
+    const lang = document.getElementById('language').value;
+
+    fetch('/explain', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({code: code, language: lang})
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('output').innerText = data.output;
+    });
+}
+</script>
+</body>
+</html>
